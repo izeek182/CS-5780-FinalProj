@@ -81,3 +81,5 @@
 # !my_customized_scatter_file.sct
 Makefile
 *.mxproject
+*/MDK-ARM
+*/EWARM/
