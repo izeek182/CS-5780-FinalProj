@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Cortex Debug",
+            "cwd": "${workspaceFolder}",
+            "executable": "./build/MicroController.elf",
+            "request": "launch",
+            "type": "cortex-debug",
+            "runToEntryPoint": "main",
+            "servertype": "stlink",
+            "showDevDebugOutput": "raw",
+            "serverpath" : "C:\\Program Files\\STMicroelectronics\\STM32CubeIDE_1.11.2\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.stlink-gdb-server.win32_2.0.400.202209281104\\tools\\bin\\ST-LINK_gdbserver.exe",
+            "stm32cubeprogrammer" : "C:\\Program Files\\STMicroelectronics\\STM32CubeIDE_1.11.2\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.0.500.202209151145\\tools\\bin"
+        }
+    ]
+}
