@@ -24,7 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -90,14 +90,29 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM15_Init();
   MX_USART1_UART_Init();
-  /* USER CODE BEGIN 2 */
+  MX_TIM6_Init();
 
+  /* USER CODE BEGIN 2 */
+  HAL_TIM_Base_Start_IT(&htim6);
+  maneuver_init();
+
+
+  MoveForward(25, 100);
+  motorIdle(30);
+  MoveBackward(50, 100);
+  motorIdle(30);
+  turnRight(75, 100);
+  motorIdle(30);
+  turnLeft(100, 100);
+  motorIdle(30);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
