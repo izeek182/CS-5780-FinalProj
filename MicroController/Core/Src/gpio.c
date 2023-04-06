@@ -41,37 +41,31 @@ void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, TriggerA_Pin|TriggerB_Pin|rLED_Pin|bLED_Pin
-                          |oLED_Pin|gLED_Pin, GPIO_PIN_RESET);
+                          |oLED_Pin|gLED_Pin|Motor1A_Pin|Motor1B_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, Motor1A_Pin|Motor2A_Pin, GPIO_PIN_RESET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Motor1B_GPIO_Port, Motor1B_Pin, GPIO_PIN_SET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(Motor2B_GPIO_Port, Motor2B_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, Motor2A_Pin|Motor2B_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PCPin PCPin PCPin PCPin
-                           PCPin PCPin PCPin */
-  GPIO_InitStruct.Pin = TriggerA_Pin|TriggerB_Pin|Motor2B_Pin|rLED_Pin
-                          |bLED_Pin|oLED_Pin|gLED_Pin;
+                           PCPin PCPin PCPin PCPin */
+  GPIO_InitStruct.Pin = TriggerA_Pin|TriggerB_Pin|rLED_Pin|bLED_Pin
+                          |oLED_Pin|gLED_Pin|Motor1A_Pin|Motor1B_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PAPin PAPin PAPin */
-  GPIO_InitStruct.Pin = Motor1A_Pin|Motor1B_Pin|Motor2A_Pin;
+  /*Configure GPIO pins : PBPin PBPin */
+  GPIO_InitStruct.Pin = Motor2A_Pin|Motor2B_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 }
 
