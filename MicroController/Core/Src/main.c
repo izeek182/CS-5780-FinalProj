@@ -91,7 +91,6 @@ int main(void)
   MX_TIM15_Init();
   MX_USART1_UART_Init();
   MX_TIM6_Init();
-
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim6);
   maneuver_init();

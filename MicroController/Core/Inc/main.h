@@ -88,7 +88,6 @@ void Error_Handler(void);
 #define Motor2B_Pin GPIO_PIN_6
 #define Motor2B_GPIO_Port GPIOB
 
-
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

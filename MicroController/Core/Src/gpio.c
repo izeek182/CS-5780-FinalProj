@@ -55,7 +55,6 @@ void MX_GPIO_Init(void)
                            PCPin PCPin PCPin PCPin */
   GPIO_InitStruct.Pin = TriggerA_Pin|TriggerB_Pin|rLED_Pin|bLED_Pin
                           |oLED_Pin|gLED_Pin|Motor1A_Pin|Motor1B_Pin;
-
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -67,7 +66,6 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
 
 }
 
