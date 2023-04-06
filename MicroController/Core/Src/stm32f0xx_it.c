@@ -57,6 +57,7 @@
 
 /* External variables --------------------------------------------------------*/
 extern TIM_HandleTypeDef htim6;
+
 extern TIM_HandleTypeDef htim15;
 /* USER CODE BEGIN EV */
 
@@ -158,6 +159,7 @@ void TIM6_DAC_IRQHandler(void)
 }
 
 /**
+
   * @brief This function handles TIM15 global interrupt.
   */
 void TIM15_IRQHandler(void)
