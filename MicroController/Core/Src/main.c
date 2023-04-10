@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "motor.h"
+#include "ultra_sonic.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -92,9 +93,12 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start_IT(&htim6);
+	HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_2);
+  ultra_init();
+	
+	
+	HAL_TIM_Base_Start_IT(&htim6);
   maneuver_init();
-
 
   MoveForward(25, 100);
   motorIdle(30);
@@ -110,7 +114,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+		HCSR04_READ();
+		HAL_Delay(200);
 
     /* USER CODE END WHILE */
 
