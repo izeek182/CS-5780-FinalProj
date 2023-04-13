@@ -167,8 +167,8 @@ void TIM15_IRQHandler(void)
 
   /* USER CODE END TIM15_IRQn 0 */
   HAL_TIM_IRQHandler(&htim15);
-	HAL_TIM_CAPTURE(TIM_HandleTypeDef* htim15_p);
   /* USER CODE BEGIN TIM15_IRQn 1 */
+	HAL_TIM_CAPTURE(&htim15);
 
   /* USER CODE END TIM15_IRQn 1 */
 }

@@ -94,6 +94,8 @@ int main(void)
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
 	HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_2);
+	//HAL_TIM_Base_Start_IT(&htim15);
+
   ultra_init();
 	
 	

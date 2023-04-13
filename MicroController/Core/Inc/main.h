@@ -59,10 +59,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define motor1PWM htim2
 #define motor2PWM htim3
-#define TriggerA_Pin GPIO_PIN_1
-#define TriggerA_GPIO_Port GPIOC
-#define TriggerB_Pin GPIO_PIN_2
-#define TriggerB_GPIO_Port GPIOC
+#define TriggerA_Pin GPIO_PIN_0
+#define TriggerA_GPIO_Port GPIOA
+#define TriggerB_Pin GPIO_PIN_1
+#define TriggerB_GPIO_Port GPIOA
 #define EchoB_Pin GPIO_PIN_14
 #define EchoB_GPIO_Port GPIOB
 #define EchoA_Pin GPIO_PIN_15
