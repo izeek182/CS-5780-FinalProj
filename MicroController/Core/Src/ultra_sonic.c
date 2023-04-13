@@ -9,7 +9,6 @@
 	uint32_t first_val;//first time stamp
 	uint32_t second_val;//second time stamp
 	uint32_t difference;//in microseconds
-	TIM_HandleTypeDef htim15;
 
 
 // ------------------- Private functions ------------------------------
