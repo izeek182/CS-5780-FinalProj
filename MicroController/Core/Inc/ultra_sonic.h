@@ -1,5 +1,5 @@
-#ifndef __CMD_BUFFER_1
-#define __CMD_BUFFER_1
+#ifndef __ultra_sonic
+#define __ultra_sonic
 
 #ifdef __cplusplus
 extern "C" {
@@ -7,9 +7,6 @@ extern "C" {
 
 // initialize ultra sonic sensor
 void ultra_init();
-
-//calculates data
-void HAL_TIM_CAPTURE(TIM_HandleTypeDef* tim_han_p);
 
 //reads in data to be captured
 void HCSR04_READ();
@@ -19,4 +16,4 @@ void HCSR04_READ();
 }
 #endif
 
-#endif /* __CMD_BUFFER_1 */
+#endif /* __ultra_sonic */

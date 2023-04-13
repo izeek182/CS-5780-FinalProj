@@ -43,22 +43,25 @@ void HAL_TIM_CAPTURE(TIM_HandleTypeDef* htim15_p){
 				difference = second_val - first_val;
 			else
 				difference = 0xFFFF - first_val + second_val;
-		}
+
 		//calculate distance
 		distance = difference *.034/2;//got this from internet might need to adjust
 		IS_FIRST_CAPTURED = 0;
-		
 		//reverse back to rising edge detection for first value
 		__HAL_TIM_SET_CAPTUREPOLARITY(htim15_p, TIM_CHANNEL_2, TIM_INPUTCHANNELPOLARITY_RISING);
 		__HAL_TIM_DISABLE_IT(&htim15, TIM_IT_CC1);
+
+		}
+		
+
 	}
 }
 
 //captures data
 void HCSR04_READ(){
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);//set high
+	HAL_GPIO_WritePin(TriggerA_GPIO_Port, TriggerA_Pin, GPIO_PIN_SET);//set high
 	delay(10);//delay 10 us per documentation
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);//set low
+	HAL_GPIO_WritePin(TriggerA_GPIO_Port, TriggerA_Pin, GPIO_PIN_RESET);//set low
 	__HAL_TIM_ENABLE_IT(&htim15, TIM_IT_CC1);
 }
 
