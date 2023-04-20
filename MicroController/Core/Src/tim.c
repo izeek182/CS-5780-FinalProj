@@ -258,17 +258,25 @@ void HAL_TIM_IC_MspInit(TIM_HandleTypeDef* tim_icHandle)
     /* TIM15 clock enable */
     __HAL_RCC_TIM15_CLK_ENABLE();
 
+    __HAL_RCC_GPIOA_CLK_ENABLE();
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**TIM15 GPIO Configuration
-    PB14     ------> TIM15_CH1
+    PA2     ------> TIM15_CH1
     PB15     ------> TIM15_CH2
     */
-    GPIO_InitStruct.Pin = EchoB_Pin|EchoA_Pin;
+    GPIO_InitStruct.Pin = EchoB_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    GPIO_InitStruct.Alternate = GPIO_AF0_TIM15;
+    HAL_GPIO_Init(EchoB_GPIO_Port, &GPIO_InitStruct);
+
+    GPIO_InitStruct.Pin = EchoA_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     GPIO_InitStruct.Alternate = GPIO_AF1_TIM15;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+    HAL_GPIO_Init(EchoA_GPIO_Port, &GPIO_InitStruct);
 
     /* TIM15 interrupt Init */
     HAL_NVIC_SetPriority(TIM15_IRQn, 2, 0);
@@ -384,10 +392,12 @@ void HAL_TIM_IC_MspDeInit(TIM_HandleTypeDef* tim_icHandle)
     __HAL_RCC_TIM15_CLK_DISABLE();
 
     /**TIM15 GPIO Configuration
-    PB14     ------> TIM15_CH1
+    PA2     ------> TIM15_CH1
     PB15     ------> TIM15_CH2
     */
-    HAL_GPIO_DeInit(GPIOB, EchoB_Pin|EchoA_Pin);
+    HAL_GPIO_DeInit(EchoB_GPIO_Port, EchoB_Pin);
+
+    HAL_GPIO_DeInit(EchoA_GPIO_Port, EchoA_Pin);
 
     /* TIM15 interrupt Deinit */
     HAL_NVIC_DisableIRQ(TIM15_IRQn);

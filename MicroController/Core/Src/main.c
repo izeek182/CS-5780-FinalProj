@@ -93,7 +93,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM6_Init();
   /* USER CODE BEGIN 2 */
-	HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_2);
+	// HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_2);
+	HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1|TIM_CHANNEL_2);
 	//HAL_TIM_Base_Start_IT(&htim15);
 
   ultra_init();
@@ -114,11 +115,25 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint16_t SensorAVal = 0;
+  uint16_t SensorBVal = 0;
   while (1)
   {
-		HCSR04_READ();
+		// HCSR04_READ();
+    TriggerUSA();
+    while(!ReadReadyUSA()){
+    }
+    SensorAVal = getValueUSA();
 		HAL_Delay(200);
+    TriggerUSB();
+    while(!ReadReadyUSB()){
+    }
+    SensorBVal = getValueUSB();
+    HAL_Delay(200);
 
+    if(SensorAVal > SensorBVal){
+      HAL_GPIO_TogglePin(gLED_GPIO_Port,gLED_Pin);
+    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

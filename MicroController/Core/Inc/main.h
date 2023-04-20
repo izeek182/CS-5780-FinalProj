@@ -63,8 +63,8 @@ void Error_Handler(void);
 #define TriggerA_GPIO_Port GPIOA
 #define TriggerB_Pin GPIO_PIN_1
 #define TriggerB_GPIO_Port GPIOA
-#define EchoB_Pin GPIO_PIN_14
-#define EchoB_GPIO_Port GPIOB
+#define EchoB_Pin GPIO_PIN_2
+#define EchoB_GPIO_Port GPIOA
 #define EchoA_Pin GPIO_PIN_15
 #define EchoA_GPIO_Port GPIOB
 #define rLED_Pin GPIO_PIN_6
