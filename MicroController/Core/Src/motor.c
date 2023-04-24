@@ -40,6 +40,7 @@ typedef struct
 cmdBuffer_t         motorCmdBuf;
 enum maneuverType   CurrentState;
 int                 remainingTimeOnCmd;
+int16_t             trim;
 
 
 // ------------------- Private functions ------------------------------
@@ -57,7 +58,9 @@ void motorA_dir(enum direction);
 // set motor B dir 0 forward, 1 backward
 void motorB_dir(enum direction);
 
-
+uint8_t motorActive(){
+    return (CurrentState != idle);
+}
 
 // ------------------- function implementations ------------------------------
 
@@ -67,6 +70,7 @@ void maneuver_init(){
     motorCmdBuf.LastNode    = 0;
     CurrentState            = idle;
     remainingTimeOnCmd      = 0;
+    trim                    = 0;
     motorA_PWM(0);
     motorB_PWM(0);
 
@@ -76,19 +80,42 @@ void maneuver_init(){
 
 void MoveForward(int power, int ticks){
     enqueue(move_forward,power,ticks);
+    motor_tick();
 }
 void MoveBackward(int power, int ticks){
     enqueue(move_backward,power,ticks);
+    motor_tick();
 }
 void turnRight(int power, int ticks){
     enqueue(turn_right,power,ticks);
+    motor_tick();
 }
 void turnLeft(int power, int ticks){
     enqueue(turn_left,power,ticks);
+    motor_tick();
 }
 void motorIdle(int ticks){
     enqueue(idle,0,ticks);
+    motor_tick();
 }
+uint16_t maxTrim = 20;
+void trimMotorsRight(int16_t trimChange){
+    trim -= trimChange;
+    if(trim > maxTrim){
+        trim = maxTrim;
+    }else if(trim <-maxTrim){
+        trim = -maxTrim;
+    }
+}
+void trimMotorsLeft(int16_t trimChange){
+    trim += trimChange;
+    if(trim > maxTrim){
+        trim = maxTrim;
+    }else if(trim <-maxTrim){
+        trim = -maxTrim;
+    }
+}
+
 
 void enqueue(enum maneuverType mType,int power, int length){
     cmdNode* newCmd = (cmdNode*)malloc(sizeof(cmdNode));
@@ -104,6 +131,7 @@ void enqueue(enum maneuverType mType,int power, int length){
         setMode(newCmd->maneuverType);
         setPower(newCmd->power);
         remainingTimeOnCmd = motorCmdBuf.CurrentNode->maneuverLength;
+        __enable_irq();
         return;
     }
     motorCmdBuf.size++;
@@ -116,6 +144,7 @@ void setMode(enum maneuverType maneuver){
     if(CurrentState == maneuver){
         return;
     }
+    CurrentState = maneuver;
     switch (maneuver)
     {
     case move_forward:
@@ -127,12 +156,12 @@ void setMode(enum maneuverType maneuver){
         motorB_dir(reverse);
         break;
     case turn_left:
-        motorA_dir(reverse);
-        motorB_dir(forward);
-        break;
-    case turn_right:
         motorA_dir(forward);
         motorB_dir(reverse);
+        break;
+    case turn_right:
+        motorA_dir(reverse);
+        motorB_dir(forward);
         break;
     case idle:
     default:
@@ -140,8 +169,8 @@ void setMode(enum maneuverType maneuver){
     }
 }
 void setPower(int power){
-    motorA_PWM(power);
-    motorB_PWM(power);
+    motorA_PWM(power + trim/2);
+    motorB_PWM(power - trim/2);
 }
 
 void runNextCmd(){
@@ -154,7 +183,8 @@ void runNextCmd(){
         motorCmdBuf.CurrentNode = 0;
         motorCmdBuf.LastNode    = 0;
         setMode(idle);
-        setPower(0);
+        motorA_PWM(0);
+        motorB_PWM(0);
         return;
     }
     setMode(motorCmdBuf.CurrentNode->maneuverType);
@@ -175,7 +205,8 @@ void motor_tick(){
 
     // Command is complete, and no new commands in queue
     setMode(idle);
-    setPower(0);
+    motorA_PWM(0);
+    motorB_PWM(0);
 }
 
 void SetPWMLevel(TIM_HandleTypeDef* timDef,int percent){

@@ -9,9 +9,12 @@ extern "C" {
 void ultra_init();
 
 //calculates data
-void HAL_TIM_CAPTURE(TIM_HandleTypeDef* tim_han_p);
+void HAL_TIM17_CAPTURE(TIM_HandleTypeDef* tim_han_p);
+void HAL_TIM15_CAPTURE(TIM_HandleTypeDef* tim_han_p);
 
 
+// Keeps reading data
+void USTick();
 // Triggers a Read of ultra sonic sensor A
 void TriggerUSA();
 // Triggers a Read of ultra sonic sensor B

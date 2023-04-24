@@ -30,7 +30,10 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+extern uint16_t frontDist;
+extern uint16_t rightDist;
 
+uint16_t targetDist;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -92,10 +95,11 @@ int main(void)
   MX_TIM15_Init();
   MX_USART1_UART_Init();
   MX_TIM6_Init();
+  MX_TIM17_Init();
   /* USER CODE BEGIN 2 */
-	// HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_2);
-	HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_1|TIM_CHANNEL_2);
-	//HAL_TIM_Base_Start_IT(&htim15);
+	HAL_TIM_IC_Start_IT(&htim15, TIM_CHANNEL_2);
+	HAL_TIM_IC_Start_IT(&htim17, TIM_CHANNEL_1);
+	// HAL_TIM_Base_Start_IT(&htim15);
 
   ultra_init();
 	
@@ -103,36 +107,39 @@ int main(void)
 	HAL_TIM_Base_Start_IT(&htim6);
   maneuver_init();
 
-  MoveForward(25, 100);
-  motorIdle(30);
-  MoveBackward(50, 100);
-  motorIdle(30);
-  turnRight(75, 100);
-  motorIdle(30);
-  turnLeft(100, 100);
-  motorIdle(30);
+  // MoveForward(25, 100);
+  // motorIdle(30);
+  // MoveBackward(50, 100);
+  // motorIdle(30);
+  // turnRight(75, 100);
+  // motorIdle(30);
+  // turnLeft(100, 100);
+  // motorIdle(30);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint16_t SensorAVal = 0;
-  uint16_t SensorBVal = 0;
+  uint16_t turn90 = 10;
+  uint16_t power = 50;
+  frontDist = 110;
+  rightDist = 110;
+  targetDist = 100;
   while (1)
   {
-		// HCSR04_READ();
-    TriggerUSA();
-    while(!ReadReadyUSA()){
+    if(motorActive()){
+      continue;
     }
-    SensorAVal = getValueUSA();
-		HAL_Delay(200);
-    TriggerUSB();
-    while(!ReadReadyUSB()){
+    if(frontDist <= targetDist){
+      turnLeft(100, turn90);
+      continue;
     }
-    SensorBVal = getValueUSB();
-    HAL_Delay(200);
 
-    if(SensorAVal > SensorBVal){
-      HAL_GPIO_TogglePin(gLED_GPIO_Port,gLED_Pin);
+    if(rightDist > targetDist){
+      trimMotorsRight(1);
+      MoveForward(power,2);
+    }else{
+      trimMotorsLeft(1);
+      MoveForward(power,2);
     }
     /* USER CODE END WHILE */
 
