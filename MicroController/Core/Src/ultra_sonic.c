@@ -9,6 +9,8 @@ uint8_t distance[2];	// in cms
 uint32_t first_val[2];	// first time stamp
 uint32_t second_val[2]; // second time stamp
 uint32_t difference[2]; // in microseconds
+
+uint8_t freshData = 0;
 uint8_t activeSensor;
 uint8_t readInProgress;
 
@@ -92,6 +94,7 @@ void HAL_TIM17_CAPTURE(TIM_HandleTypeDef *htim17_p)
 		{
 			distance[1] = difference[1];
 			frontDist = difference[1];
+			freshData |= 1;
 		}
 		IS_FIRST_CAPTURED[1] = 0;
 		readInProgress = 0;
@@ -130,6 +133,7 @@ void HAL_TIM15_CAPTURE(TIM_HandleTypeDef *htim15_p)
 		{
 			distance[0] = difference[0];
 			rightDist = difference[0];
+			freshData |= 2;
 		}
 		IS_FIRST_CAPTURED[0] = 0;
 		readInProgress = 0;

@@ -32,6 +32,7 @@
 /* USER CODE BEGIN PTD */
 extern uint16_t frontDist;
 extern uint16_t rightDist;
+extern uint8_t freshData;
 
 uint16_t targetDist;
 /* USER CODE END PTD */
@@ -120,27 +121,45 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   uint16_t turn90 = 10;
-  uint16_t power = 50;
+  uint16_t power = 40;
   frontDist = 110;
   rightDist = 110;
-  targetDist = 100;
+  targetDist = 50;
   while (1)
   {
     if(motorActive()){
       continue;
     }
-    if(frontDist <= targetDist){
-      turnLeft(100, turn90);
+
+    if(frontDist <= 125){
+      turnLeft(power, 10);
+      MoveBackward(power,5);
+      turnLeft(power, 25);
       continue;
     }
-
-    if(rightDist > targetDist){
-      trimMotorsRight(1);
-      MoveForward(power,2);
-    }else{
-      trimMotorsLeft(1);
-      MoveForward(power,2);
+     if(rightDist > targetDist*4){
+      setTrim(0);
+      MoveForward(power, 30);
+      
+      turnRight(power, 15);
+      turnRight(power, 15);
+     
+      MoveForward(power, 30);
+    
+      turnLeft(power,7);
+      continue;
+      // MoveForward(power,5);
     }
+   
+    setTrim((targetDist - rightDist)*1);
+    MoveForward(power,1);
+    // if(rightDist > targetDist){
+    // trimMotorsRight(1);
+    //   MoveForward(power,2);
+    // }else{
+    //   trimMotorsLeft(1);
+    //   MoveForward(power,2);
+    // }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

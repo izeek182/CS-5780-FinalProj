@@ -19,8 +19,9 @@ void turnRight(int power, int ticks);
 void turnLeft(int power, int ticks);
 //  Enqueues a Idle command for given length of time
 void motorIdle(int ticks);
+void pivotRight(int power, int ticks);
 
-
+void setTrim(int16_t);
 void trimMotorsRight(int16_t trimAmnt);
 void trimMotorsLeft(int16_t trimAmnt);
 

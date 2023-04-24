@@ -10,6 +10,7 @@ enum maneuverType{
     move_forward,
     move_backward,
     turn_right,
+    pivot_right,
     turn_left
 };
 
@@ -90,6 +91,14 @@ void turnRight(int power, int ticks){
     enqueue(turn_right,power,ticks);
     motor_tick();
 }
+
+void pivotRight(int power, int ticks){
+    enqueue(pivot_right,power,ticks);
+    trim = 30;
+    motor_tick();
+}
+
+
 void turnLeft(int power, int ticks){
     enqueue(turn_left,power,ticks);
     motor_tick();
@@ -115,6 +124,15 @@ void trimMotorsLeft(int16_t trimChange){
         trim = -maxTrim;
     }
 }
+void setTrim(int16_t newTrim){
+    trim = newTrim;
+    if(trim > maxTrim){
+        trim = maxTrim;
+    }else if(trim <-maxTrim){
+        trim = -maxTrim;
+    }
+}
+
 
 
 void enqueue(enum maneuverType mType,int power, int length){
@@ -163,14 +181,35 @@ void setMode(enum maneuverType maneuver){
         motorA_dir(reverse);
         motorB_dir(forward);
         break;
+    case pivot_right:
+        motorA_dir(forward);
+        motorB_dir(forward);
+        break;
     case idle:
     default:
         break;
     }
 }
 void setPower(int power){
-    motorA_PWM(power + trim/2);
-    motorB_PWM(power - trim/2);
+    switch (CurrentState)
+    {
+    case idle:
+        motorA_PWM(0);
+        motorB_PWM(0);
+        break;
+    case pivot_right:
+        motorA_PWM(trim);
+        motorB_PWM(power);
+        break;
+    case move_forward:
+    case move_backward:
+    case turn_left:
+    case turn_right:
+    default:
+        motorA_PWM(power + trim/2);
+        motorB_PWM(power - trim/2);
+        break;
+    }
 }
 
 void runNextCmd(){
