@@ -53,6 +53,7 @@ NVIC.SysTick_IRQn=true\:3\:0\:true\:false\:true\:false\:true\:false
 NVIC.TIM15_IRQn=true\:2\:0\:true\:false\:true\:true\:true\:true
 NVIC.TIM17_IRQn=true\:0\:0\:false\:false\:true\:true\:true\:true
 NVIC.TIM6_DAC_IRQn=true\:2\:0\:true\:false\:true\:true\:true\:true
+NVIC.USART1_IRQn=true\:0\:0\:false\:false\:true\:true\:true\:true
 PA0.GPIOParameters=GPIO_Speed,GPIO_Label
 PA0.GPIO_Label=TriggerA
 PA0.GPIO_Speed=GPIO_SPEED_FREQ_HIGH
