@@ -32,6 +32,7 @@
 /* USER CODE BEGIN PTD */
 extern uint16_t frontDist;
 extern uint16_t rightDist;
+extern int16_t deltaRight;
 extern uint8_t freshData;
 
 uint16_t targetDist;
@@ -120,13 +121,16 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint16_t turn90 = 10;
-  uint16_t power = 40;
-  frontDist = 110;
-  rightDist = 110;
-  targetDist = 50;
-	
+  // uint16_t turn90 = 10;
+  uint16_t power = 30;
+  frontDist = 310;
+  rightDist = 310;
+  targetDist = 100;
 	while(1){
+	while(1){
+    if(motorActive()){
+      continue;
+    }
 		if(frontDist >= 125 && rightDist >= 125){
 			MoveForward(power, 5);
 		}
@@ -142,30 +146,38 @@ int main(void)
     if(motorActive()){
       continue;
     }
-//		if(frontDist <= 125 && rightDist <= 125){
-//			
-//		}
+		// if(frontDist >= 125 && rightDist >= targetDist*2){
+    //   break;
+		// }
+    if(frontDist <= 125 && rightDist <= targetDist){
+      setTrim(0);
+      turnLeft(power,20);
+      continue;
+		}
     if(frontDist <= 125){
-      turnLeft(power, 10);
-      MoveBackward(power,5);
-      turnLeft(power, 25);
+      setTrim(0);
+      MoveBackward(power,20);
+      turnLeft(power, 50);
       continue;
     }
      if(rightDist > targetDist*4){
       setTrim(0);
       MoveForward(power, 30);
-      
       turnRight(power, 15);
-      turnRight(power, 15);
-     
       MoveForward(power, 30);
+      // turnRight(power, 15);
+     
     
-      turnLeft(power,7);
+      // turnLeft(power,7);
       continue;
       // MoveForward(power,5);
     }
-   
-    setTrim((targetDist - rightDist)*1);
+
+    if(deltaRight > 0){
+      setTrim((targetDist - rightDist)*0.125);     
+    }else{
+      setTrim((targetDist - rightDist)*0.25);
+    }
     MoveForward(power,1);
     // if(rightDist > targetDist){
     // trimMotorsRight(1);
@@ -180,7 +192,7 @@ int main(void)
   }
   /* USER CODE END 3 */
 }
-
+}
 /**
   * @brief System Clock Configuration
   * @retval None

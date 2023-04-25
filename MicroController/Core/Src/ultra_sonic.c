@@ -17,7 +17,7 @@ uint8_t readInProgress;
 uint16_t startRead;
 uint16_t Timeout = 500;
 
-
+int16_t deltaRight = 0;
 uint16_t frontDist = 0;
 uint16_t rightDist = 0;
 
@@ -132,6 +132,7 @@ void HAL_TIM15_CAPTURE(TIM_HandleTypeDef *htim15_p)
 		if (difference[0] < 10000)
 		{
 			distance[0] = difference[0];
+			deltaRight = rightDist - difference[0];
 			rightDist = difference[0];
 			freshData |= 2;
 		}
