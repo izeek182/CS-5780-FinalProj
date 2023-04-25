@@ -125,12 +125,26 @@ int main(void)
   frontDist = 110;
   rightDist = 110;
   targetDist = 50;
+	
+	while(1){
+		if(frontDist >= 125 && rightDist >= 125){
+			MoveForward(power, 5);
+		}
+		else
+			break;
+	}
+	
+	//turnRight(power,50);
+	
+	
   while (1)
   {
     if(motorActive()){
       continue;
     }
-
+//		if(frontDist <= 125 && rightDist <= 125){
+//			
+//		}
     if(frontDist <= 125){
       turnLeft(power, 10);
       MoveBackward(power,5);

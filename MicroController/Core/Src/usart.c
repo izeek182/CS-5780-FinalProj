@@ -137,54 +137,54 @@ void usart_str_transmit(char *c) {
 	}
 	return;
 }
-void USART1_IRQHandler(void) {
-	if(_RX_flag == 0) {
-		_RX_color = 0;
-		_RX_color |= USART1->RDR;
-		_RX_flag = 1;
-	}
-	else {
-		_RX_func = 0;
-		_RX_func |= USART1->RDR;
-		if(_RX_color == 's') {
-			if(_RX_func == '0') {
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET);
-			}
-			else if(_RX_func == '1') {
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);
-			}
-			else if(_RX_func == '2') {
-				HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
-			}
-			else {
-				usart_str_transmit(err);
-			}
-		}
-		else if(_RX_color == 'g') {
-			if(_RX_func == '0') {
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_RESET);
-			}
-			else if(_RX_func == '1') {
-				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_SET);
-			}
-			else if(_RX_func == '2') {
-				HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
-			}
-			else {
-				usart_str_transmit(err);
-			}
-		}
-		
-		
-		else {
-			usart_str_transmit(err);
-		}
-		
-		usart_str_transmit("CMD?\n");
-		_RX_flag = 0;
-		_RX_color = 0;
-	 _RX_func = 0;
-	}
-}
+//void USART1_IRQHandler(void) {
+//	if(_RX_flag == 0) {
+//		_RX_color = 0;
+//		_RX_color |= USART1->RDR;
+//		_RX_flag = 1;
+//	}
+//	else {
+//		_RX_func = 0;
+//		_RX_func |= USART1->RDR;
+//		if(_RX_color == 's') {
+//			if(_RX_func == '0') {
+//				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_RESET);
+//			}
+//			else if(_RX_func == '1') {
+//				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_6, GPIO_PIN_SET);
+//			}
+//			else if(_RX_func == '2') {
+//				HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
+//			}
+//			else {
+//				usart_str_transmit(err);
+//			}
+//		}
+//		else if(_RX_color == 'g') {
+//			if(_RX_func == '0') {
+//				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_RESET);
+//			}
+//			else if(_RX_func == '1') {
+//				HAL_GPIO_WritePin(GPIOC, GPIO_PIN_9, GPIO_PIN_SET);
+//			}
+//			else if(_RX_func == '2') {
+//				HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_9);
+//			}
+//			else {
+//				usart_str_transmit(err);
+//			}
+//		}
+//		
+//		
+//		else {
+//			usart_str_transmit(err);
+//		}
+//		
+//		usart_str_transmit("CMD?\n");
+//		_RX_flag = 0;
+//		_RX_color = 0;
+//	 _RX_func = 0;
+//	}
+//}
 
 /* USER CODE END 1 */
