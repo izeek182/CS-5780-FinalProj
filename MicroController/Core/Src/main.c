@@ -140,23 +140,23 @@ int main(void)
         {if(motorActive()){
           continue;  }
 
-          MoveForward(power, 5);
+          MoveForward(power, 1);
           setTrim(0);
-        } while (frontDist >= 90 && rightDist >= 90);
+        } while (frontDist >= 100 && rightDist >= 100);
 
 
-         if (frontDist <= 90 && rightDist >= 90)
+         if (frontDist <= 100 && rightDist >= 100)
         {
           z = left;
           break;
         }
-        else if (frontDist <= 90)
+        else if (frontDist <= 100)
         {
           z = forward;
           break;
         }
 
-        else if (frontDist >= 90 && rightDist <= 90)
+        else if (frontDist >= 100 && rightDist <= 100)
         {
             z=right;
             break;
@@ -169,19 +169,19 @@ int main(void)
           if(motorActive()){
          continue;
         }
-          MoveForward(power, 5);
+          MoveForward(power, 1);
           setTrim(0);
         } 
-        while (rightDist >= 35 && (rightDist <= 90 && frontDist>=90));
+        while (rightDist >= 30 && (rightDist <= 100 && frontDist>=100));
 
-        if ( (rightDist<35) || ( frontDist && rightDist <= 90))
+        if ( (rightDist<30) || ( frontDist && rightDist <= 100))
         {
           z = left;
           break;
         }
 
 
-        else if (frontDist >= 90 && rightDist >= 90)
+        else if (frontDist >= 100 && rightDist >= 100)
         {
             z=right;
             break;
@@ -193,28 +193,29 @@ int main(void)
       case right:
         // statements
           
-         while (rightDist >= 90){
+         while (rightDist >= 100 && frontDist >=100){
           if(motorActive())
           {continue;}
-
-          turnRight(power, 5);
+          
+          
+          turnRight(power, 1);
           setTrim(0);
        
          }
 
-        if (frontDist >= 90 && rightDist <= 90)
+        if (frontDist >= 100 && rightDist <= 100)
         {
           z = forward;
           break;
         }
-        else if (frontDist < 90 && rightDist < 90)
+        else if (frontDist < 100 && rightDist < 100)
         {
            z=left;
             break;
 
         }
 
-        else if (frontDist >= 90 && rightDist >= 90)
+        else if (frontDist >= 100 && rightDist >= 100)
         {
           z=finding;
           break;
@@ -225,23 +226,23 @@ int main(void)
       
       case left:
         // statements
-         while ( frontDist <90 || rightDist<35){
+         while ( (frontDist <100||  rightDist>100) || rightDist<30){
         if(motorActive()){
           continue;
        }
-          turnLeft(power, 5);
+          turnLeft(power, 1);
           
           
           setTrim(0);
          }
-        if (frontDist >= 90 && rightDist <= 90)
+        if (frontDist >= 100 && rightDist <= 100)
         {
           z = forward;
           break;
         }
         
        
-        else if ( rightDist >= 90 )
+        else if (frontDist <= 100 && rightDist >= 100 )
         {
           z = right;
           break;
