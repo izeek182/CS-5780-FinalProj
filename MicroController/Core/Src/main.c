@@ -35,13 +35,19 @@ extern uint16_t frontDist;
 extern uint16_t rightDist;
 extern int16_t deltaRight;
 extern uint8_t freshData;
-enum state{forward,right,left,finding};
+enum state
+{
+  forward,
+  right,
+  left,
+  finding,
+  cornerRight
+};
 
 uint16_t targetDist;
 
 charBuffer *UsartReadBuffer;
 charBuffer *UsartWriteQueue;
-
 
 /* USER CODE END PTD */
 
@@ -134,132 +140,140 @@ int main(void)
   frontDist = 300;
   rightDist = 300;
   targetDist = 125;
+  uint16_t RightClose = 50;
+  uint16_t RightFar = 100;
+  uint16_t RightCorner = 150;
+  uint16_t FrontFar = 100;
   enum state z = finding;
- 
-   while(1){
-    if(motorActive()){
-        continue;
-      }
-    switch (z){
-      case finding:
-        // statements
 
-        do
-        {if(motorActive()){
-          continue;  }
+  while (1)
+  {
+    if (motorActive())
+    {
+      continue;
+    }
+    switch (z)
+    {
+    case finding:
+      // statements
 
-          MoveForward(power, 1);
-          setTrim(0);
-        } while (frontDist >= 100 && rightDist >= 100);
-
-
-         if (frontDist <= 100 && rightDist >= 100)
+      do
+      {
+        if (motorActive())
         {
-          z = left;
-          break;
-        }
-        else if (frontDist <= 100)
-        {
-          z = forward;
-          break;
-        }
-
-        else if (frontDist >= 100 && rightDist <= 100)
-        {
-            z=right;
-            break;
-        }
-      
-      case forward:
-        // statements
-        do
-        {
-          if(motorActive()){
-         continue;
-        }
-          MoveForward(power, 1);
-          setTrim(0);
-        } 
-        while (rightDist >= 30 && (rightDist <= 100 && frontDist>=100));
-
-        if ( (rightDist<30) || ( frontDist && rightDist <= 100))
-        {
-          z = left;
-          break;
-        }
-
-
-        else if (frontDist >= 100 && rightDist >= 100)
-        {
-            z=right;
-            break;
-        }
-        
-       
-
-
-      case right:
-        // statements
-          
-         while (rightDist >= 100 && frontDist >=100){
-          if(motorActive())
-          {continue;}
-          
-          
-          turnRight(power, 1);
-          setTrim(0);
-       
-         }
-
-        if (frontDist >= 100 && rightDist <= 100)
-        {
-          z = forward;
-          break;
-        }
-        else if (frontDist < 100 && rightDist < 100)
-        {
-           z=left;
-            break;
-
-        }
-
-        else if (frontDist >= 100 && rightDist >= 100)
-        {
-          z=finding;
-          break;
-        }
-          
-        
-       
-      
-      case left:
-        // statements
-         while ( (frontDist <100||  rightDist>100) || rightDist<30){
-        if(motorActive()){
           continue;
-       }
-          turnLeft(power, 1);
-          
-          
-          setTrim(0);
-         }
-        if (frontDist >= 100 && rightDist <= 100)
-        {
-          z = forward;
-          break;
         }
-        
-       
-        else if (frontDist <= 100 && rightDist >= 100 )
-        {
-          z = right;
-          break;
-        }
-       
 
-        // default statements
+        MoveForward(power, 1);
+        setTrim(0);
+      } while (frontDist >= FrontFar && rightDist >= RightFar);
+
+      if (frontDist <= FrontFar && rightDist >= RightFar)
+      {
+        z = left;
+        break;
       }
-   }
+      else if (frontDist <= FrontFar)
+      {
+        z = forward;
+        break;
+      }
+
+      else if (frontDist >= FrontFar && rightDist <= RightFar)
+      {
+        z = right;
+        break;
+      }
+
+    case forward:
+      // statements
+      do
+      {
+        if (motorActive())
+        {
+          continue;
+        }
+        MoveForward(power, 1);
+        setTrim(0);
+      } while (rightDist >= RightClose && rightDist <= RightFar && frontDist >= FrontFar);
+
+      if ((rightDist < RightClose) || (frontDist > FrontFar && rightDist <= RightFar))
+      {
+        z = left;
+        break;
+      }
+
+      else if (frontDist >= FrontFar && rightDist >= RightClose)
+      {
+        z = right;
+        break;
+      }
+
+    case right:
+      // statements
+
+      while (rightDist >= RightFar && frontDist >= FrontFar)
+      {
+        if (motorActive())
+        {
+          continue;
+        }
+
+        turnRight(power, 1);
+        setTrim(0);
+      }
+
+      if (frontDist >= FrontFar && rightDist <= RightFar)
+      {
+        z = forward;
+        break;
+      }
+      else if (frontDist < FrontFar && rightDist < RightFar)
+      {
+        z = left;
+        break;
+      }
+
+      else if (frontDist >= FrontFar && rightDist >= RightFar)
+      {
+        z = finding;
+        break;
+      }
+
+    case left:
+      // statements
+      while ((frontDist < FrontFar || rightDist > RightFar) || rightDist < RightClose)
+      {
+        if (motorActive())
+        {
+          continue;
+        }
+        turnLeft(power, 1);
+
+        setTrim(0);
+      }
+      if (frontDist >= FrontFar && rightDist <= RightFar)
+      {
+        z = forward;
+        break;
+      }
+
+      else if (frontDist <= FrontFar && rightDist >= RightFar)
+      {
+        z = right;
+        break;
+      }
+
+      else
+      {
+        z = right;
+        MoveForward(power, 15);
+        break;
+      }
+
+      // default statements
+    }
+  }
   // 	(while1){
   // 	while(1){
   //     if(motorActive()){
@@ -318,13 +332,13 @@ int main(void)
   //     //   trimMotorsLeft(1);
   //     //   MoveForward(power,2);
   //     // }
-  //     /* USER CODE END WHILE */
+  /* USER CODE END WHILE */
 
-  //     /* USER CODE BEGIN 3 */
+  /* USER CODE BEGIN 3 */
   //   }
-  //   /* USER CODE END 3 */
-  // }
+  /* USER CODE END 3 */
 }
+
 /**
  * @brief System Clock Configuration
  * @retval None
