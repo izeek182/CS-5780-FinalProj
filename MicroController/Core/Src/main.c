@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 #include "motor.h"
 #include "ultra_sonic.h"
+#include "charBuffer.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -37,6 +38,11 @@ extern uint8_t freshData;
 enum state{forward,right,left,finding};
 
 uint16_t targetDist;
+
+charBuffer *UsartReadBuffer;
+charBuffer *UsartWriteQueue;
+
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -72,7 +78,9 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  UsartReadBuffer = NewCharBuffer();
+  UsartWriteQueue = NewCharBuffer();
+  AppendCharBuffer(UsartWriteQueue, "----------------------------------------------------------------------\r\nUsart Write Buffer Init\r\nAwait further Messages\r\n", 122);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
