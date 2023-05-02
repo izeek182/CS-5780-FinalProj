@@ -36,6 +36,7 @@ BUILD_DIR = build
 ######################################
 # C sources
 C_SOURCES =  \
+Core/Src/charBuffer.c \
 Core/Src/gpio.c \
 Core/Src/main.c \
 Core/Src/motor.c \

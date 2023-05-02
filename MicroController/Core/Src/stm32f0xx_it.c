@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "motor.h"
+#include "usart.h"
 #include "ultra_sonic.h"
 #include "charBuffer.h"
 /* USER CODE END Includes */
@@ -157,13 +158,7 @@ void TIM6_DAC_IRQHandler(void)
 // This is our rovers "tick timer" all most time dependant commands will reference this 
   motor_tick();
   USTick();
-
-  // Write anything that in the Usart buffer out over the usart.
-  HAL_UART_GetState(&huart1);
-  if (UsartWriteQueue->size > 0)
-    {
-      WriteCharBufferOverUsart(UsartWriteQueue, &huart1, 20);
-    }
+  USARTTick();
   /* USER CODE END TIM6_DAC_IRQn 0 */
   HAL_TIM_IRQHandler(&htim6);
   /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
