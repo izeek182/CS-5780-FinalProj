@@ -5,7 +5,7 @@
 
 ### Generate Source
 In order to generate the required source files, you must use [STMCube](https://www.st.com/en/development-tools/stm32cubemx.html) to open ```/MicroController/MicroController.ioc``` then select the "Generate Code" Button in the top left.
-![CubeMX layout Example](/CubeMx.PNG "CubeMX layout Example")
+![CubeMX layout Example](/CubeMX.PNG "CubeMX layout Example")
 
 ### Build MicroController image
 [STM32-for-VScode](https://marketplace.visualstudio.com/items?itemName=bmd.stm32-for-vscode) is a required Extension for this repository, if you do not have it installed follow installation and configuration instructions [here](https://marketplace.visualstudio.com/items?itemName=bmd.stm32-for-vscode).
