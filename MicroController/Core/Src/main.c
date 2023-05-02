@@ -264,8 +264,12 @@ int main(void)
         break;
       }
 
-      else
+      else if (frontDist >= FrontFar && rightDist >= RightFar)
       {
+        if (motorActive())
+        {
+          continue;
+        }
         z = right;
         MoveForward(power, 15);
         break;
