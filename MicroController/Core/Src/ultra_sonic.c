@@ -15,7 +15,7 @@ uint8_t activeSensor;
 uint8_t readInProgress;
 
 uint16_t startRead;
-uint16_t Timeout = 500;
+uint16_t Timeout = 200;
 
 int16_t deltaRight = 0;
 uint16_t frontDist = 0;
@@ -95,6 +95,9 @@ void HAL_TIM17_CAPTURE(TIM_HandleTypeDef *htim17_p)
 			distance[1] = difference[1];
 			frontDist = difference[1];
 			freshData |= 1;
+		}else{
+			frontDist = 10000;
+			freshData |= 1;
 		}
 		IS_FIRST_CAPTURED[1] = 0;
 		readInProgress = 0;
@@ -134,6 +137,9 @@ void HAL_TIM15_CAPTURE(TIM_HandleTypeDef *htim15_p)
 			distance[0] = difference[0];
 			deltaRight = rightDist - difference[0];
 			rightDist = difference[0];
+			freshData |= 2;
+		}else{
+			rightDist = 10000;
 			freshData |= 2;
 		}
 		IS_FIRST_CAPTURED[0] = 0;

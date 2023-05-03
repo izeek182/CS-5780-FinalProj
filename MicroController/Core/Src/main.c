@@ -37,11 +37,14 @@ extern int16_t deltaRight;
 extern uint8_t freshData;
 enum state
 {
-  forward,
-  right,
-  left,
-  finding,
-  cornerRight
+  searching,
+  HugWall,
+  curveRight,
+  curveLeft,
+  turningRight,
+  turningLeft,
+  reverse,
+  unJam
 };
 
 uint16_t targetDist;
@@ -137,144 +140,196 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   // uint16_t turn90 = 10;
   uint16_t power = 31;
-  frontDist = 300;
-  rightDist = 300;
+  frontDist = 500;
+  rightDist = 500;
   targetDist = 125;
+
+  uint16_t motorTime = 5;
+  uint16_t turnTime = 30;
+  uint16_t curveTrim = 10;
   uint16_t RightClose = 50;
+  uint16_t probJammed = 30;
   uint16_t RightFar = 100;
-  uint16_t RightCorner = 150;
+  uint16_t RightCorner = 300;
   uint16_t FrontFar = 100;
-  enum state z = finding;
+  uint16_t FrontClose = 50;
+
+  enum state currentState = searching;
 
   while (1)
   {
-    if (motorActive())
+    // State Actions the action for the new state is executed First then new data is taken
+    setTrim(0);
+    switch (currentState)
     {
-      continue;
+    case searching:
+      MoveForward(power, motorTime);
+      break;
+    case HugWall:
+      if (deltaRight > -10)
+      {
+        setTrim(curveTrim / 2);
+      }
+      else if (deltaRight < 10)
+      {
+        setTrim(-curveTrim / 2);
+      }
+      MoveForward(power, motorTime);
+      break;
+    case curveRight:
+      setTrim(-curveTrim);
+      MoveForward(power, motorTime);
+      break;
+    case curveLeft:
+      setTrim(curveTrim);
+      MoveForward(power, motorTime);
+      break;
+    case turningRight:
+      turnRight(power, turnTime);
+      MoveForward(power, turnTime * 3);
+      turnRight(power, turnTime);
+      break;
+    case turningLeft:
+      turnLeft(power, turnTime);
+      break;
+      // default statements
+    case unJam:
+      turnRight(power, turnTime);
+      MoveBackward(power, turnTime);
+      turnLeft(power, turnTime);
+      // turnLeft(power,motorTime);
+      break;
+    case reverse:
+      MoveBackward(power, turnTime);
+      // turnLeft(power,motorTime);
+      break;
     }
-    switch (z)
+
+    // Spin main till the motor is done And we have new data
+    while (motorActive() || freshData < 3)
     {
-    case finding:
-      // statements
+    }
+    // freshData = 0;
 
-      do
+    switch (currentState)
+    {
+    case searching:
+      if (frontDist < FrontClose)
       {
-        if (motorActive())
-        {
-          continue;
-        }
-
-        MoveForward(power, 1);
-        setTrim(0);
-      } while (frontDist >= FrontFar && rightDist >= RightFar);
-
-      if (frontDist <= FrontFar && rightDist >= RightFar)
-      {
-        z = left;
-        break;
+        currentState = reverse;
       }
-      else if (frontDist <= FrontFar)
+      else if (frontDist < FrontFar)
       {
-        z = forward;
-        break;
+        currentState = turningLeft;
       }
-
-      else if (frontDist >= FrontFar && rightDist <= RightFar)
+      else if (rightDist < RightFar)
       {
-        z = right;
-        break;
+        currentState = HugWall;
       }
-
-    case forward:
-      // statements
-      do
+      break;
+    case HugWall:
+      if (rightDist < probJammed || frontDist < probJammed)
       {
-        if (motorActive())
-        {
-          continue;
-        }
-        MoveForward(power, 1);
-        setTrim(0);
-      } while (rightDist >= RightClose && rightDist <= RightFar && frontDist >= FrontFar);
-
-      if ((rightDist < RightClose) || (frontDist > FrontFar && rightDist <= RightFar))
-      {
-        z = left;
-        break;
+        currentState = unJam;
       }
-
-      else if (frontDist >= FrontFar && rightDist >= RightClose)
+      else if (frontDist < FrontClose)
       {
-        z = right;
-        break;
+        currentState = reverse;
       }
-
-    case right:
-      // statements
-
-      while (rightDist >= RightFar && frontDist >= FrontFar)
+      else if (frontDist < FrontFar)
       {
-        if (motorActive())
-        {
-          continue;
-        }
-
-        turnRight(power, 1);
-        setTrim(0);
+        currentState = turningLeft;
       }
-
-      if (frontDist >= FrontFar && rightDist <= RightFar)
+      else if (rightDist > RightCorner)
       {
-        z = forward;
-        break;
+        currentState = turningRight;
       }
-      else if (frontDist < FrontFar && rightDist < RightFar)
+      else if (rightDist > RightFar)
       {
-        z = left;
-        break;
+        currentState = curveRight;
       }
-
-      else if (frontDist >= FrontFar && rightDist >= RightFar)
+      else if (rightDist < RightClose)
       {
-        z = finding;
-        break;
+        currentState = curveLeft;
       }
-
-    case left:
-      // statements
-      while ((frontDist < FrontFar || rightDist > RightFar) || rightDist < RightClose)
+      break;
+    case curveRight:
+      if (rightDist < probJammed || frontDist < probJammed)
       {
-        if (motorActive())
-        {
-          continue;
-        }
-        turnLeft(power, 1);
-
-        setTrim(0);
+        currentState = unJam;
       }
-      if (frontDist >= FrontFar && rightDist <= RightFar)
+      else if (frontDist < FrontClose)
       {
-        z = forward;
-        break;
+        currentState = reverse;
       }
-
-      else if (frontDist <= FrontFar && rightDist >= RightFar)
+      else if (frontDist < FrontFar)
       {
-        z = right;
-        break;
+        currentState = turningLeft;
       }
-
-      else if (frontDist >= FrontFar && rightDist >= RightFar)
+      else if (rightDist > RightClose)
       {
-        if (motorActive())
-        {
-          continue;
-        }
-        z = right;
-        MoveForward(power, 15);
-        break;
+        currentState = HugWall;
       }
+      break;
+    case curveLeft:
+      if (rightDist < probJammed || frontDist < probJammed)
+      {
+        currentState = unJam;
+      }
+      else if (frontDist < FrontClose)
+      {
+        currentState = reverse;
+      }
+      else if (frontDist < FrontFar)
+      {
+        currentState = turningLeft;
+      }
+      else if (rightDist < RightFar)
+      {
+        currentState = HugWall;
+      }
+      break;
+    case turningRight:
 
+      if (frontDist < FrontClose)
+      {
+        currentState = reverse;
+      }
+      else if (frontDist < FrontFar)
+      {
+        currentState = turningLeft;
+      }
+      else if (rightDist < RightFar)
+      {
+        currentState = HugWall;
+      }
+      break;
+    case turningLeft:
+      if (rightDist < probJammed || frontDist < probJammed)
+      {
+        currentState = unJam;
+      }
+      else if (frontDist < FrontClose)
+      {
+        currentState = reverse;
+      }
+      else if (frontDist > FrontFar && rightDist < RightCorner)
+      {
+        currentState = searching;
+      }
+      break;
+    case unJam:
+      if (rightDist > probJammed && frontDist > probJammed)
+      {
+        currentState = searching;
+      }
+      break;
+    case reverse:
+      if (frontDist > FrontClose)
+      {
+        currentState = turningLeft;
+      }
+      break;
       // default statements
     }
   }
