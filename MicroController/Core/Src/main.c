@@ -145,7 +145,7 @@ int main(void)
   targetDist = 125;
 
   uint16_t motorTime = 5;
-  uint16_t turnTime = 30;
+  uint16_t turnTime = 20;
   uint16_t curveTrim = 10;
   uint16_t RightClose = 50;
   uint16_t probJammed = 30;
@@ -153,6 +153,9 @@ int main(void)
   uint16_t RightCorner = 300;
   uint16_t FrontFar = 100;
   uint16_t FrontClose = 50;
+
+  uint16_t lastState = searching;
+  uint16_t staleCount = 0;
 
   enum state currentState = searching;
 
@@ -211,6 +214,17 @@ int main(void)
     }
     // Resets the memory indicating new data has been collected
     freshData = 0;
+
+
+    if(currentState == lastState){
+      staleCount++;
+    }else{
+      staleCount = 0;
+    }
+
+    
+    lastState = currentState;
+
 
     switch (currentState)
     {
@@ -291,8 +305,10 @@ int main(void)
       }
       break;
     case turningRight:
-
-      if (frontDist < FrontClose)
+      if(staleCount > 10){
+        currentState = searching;
+      }
+      else if (frontDist < FrontClose)
       {
         currentState = reverse;
       }
@@ -333,6 +349,8 @@ int main(void)
       break;
       // default statements
     }
+
+
   }
   // 	(while1){
   // 	while(1){
