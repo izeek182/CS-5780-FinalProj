@@ -9,6 +9,7 @@ uint8_t distance[2];	// in cms
 uint32_t first_val[2];	// first time stamp
 uint32_t second_val[2]; // second time stamp
 uint32_t difference[2]; // in microseconds
+uint16_t timeoutCount[2];
 
 uint8_t freshData = 0;
 uint8_t activeSensor;
@@ -43,8 +44,18 @@ void USTick(){
 	}
 	if(HAL_GetTick()- startRead > Timeout){
 		readInProgress = 0;
-		IS_FIRST_CAPTURED[0] = 0;
-		IS_FIRST_CAPTURED[1] = 0;
+		IS_FIRST_CAPTURED[activeSensor] = 0;
+		timeoutCount[activeSensor]++;
+		if(timeoutCount[activeSensor]>10){
+			if(activeSensor){
+				frontDist = 10000;
+				freshData |= 1;
+			}else{
+				rightDist = 10000;
+				freshData |= 2;
+			}
+		}
+
 	}
 }
 
@@ -99,6 +110,7 @@ void HAL_TIM17_CAPTURE(TIM_HandleTypeDef *htim17_p)
 			frontDist = 10000;
 			freshData |= 1;
 		}
+		timeoutCount[activeSensor] = 0;
 		IS_FIRST_CAPTURED[1] = 0;
 		readInProgress = 0;
 		// reverse back to rising edge detection for first value
@@ -143,6 +155,7 @@ void HAL_TIM15_CAPTURE(TIM_HandleTypeDef *htim15_p)
 			freshData |= 2;
 		}
 		IS_FIRST_CAPTURED[0] = 0;
+		timeoutCount[activeSensor] = 0;
 		readInProgress = 0;
 		// reverse back to rising edge detection for first value
 		//  __HAL_TIM_DISABLE_IT(&htim15, TIM_IT_CC1);

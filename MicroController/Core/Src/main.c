@@ -209,7 +209,8 @@ int main(void)
     while (motorActive() || freshData < 3)
     {
     }
-    // freshData = 0;
+    // Resets the memory indicating new data has been collected
+    freshData = 0;
 
     switch (currentState)
     {
