@@ -1,8 +1,19 @@
 # CS-5780 Final Project
+ 
+ <!-- Come up with a project name? -->
+ 
+ 
+## Purpose
+Fill this in with the purpose of this project
+
+## Functionality
+Fill this in with what the rover does, and how it operates. autonomous ect.
+
+## Flow charts
+Add the state machine diagram for the control logic here, and any other flow charts that are relevant. 
 
 
 ## Build Instructions
-
 ### Generate Source
 In order to generate the required source files, you must use [STMCube](https://www.st.com/en/development-tools/stm32cubemx.html) to open ```/MicroController/MicroController.ioc``` then select the "Generate Code" Button in the top left.
 ![CubeMX layout Example](/CubeMX.PNG "CubeMX layout Example")
@@ -14,14 +25,14 @@ With [STM32-for-VScode](https://marketplace.visualstudio.com/items?itemName=bmd.
 ![STM32-for-VScode](/STM32-for-vscode.PNG "STM32-for-VScode layout Example")
 
 ## Wiring Diagrams
-The rover has a very simple wiring system, for the most part components are connected to a direct breakout of a STM32F075 processor. Connections can be seen below. 
+The rover has a very simple wiring system, for the most part components are connected to a direct breakout of a STM32F075 processor. With the exception of the 2 DC motor to control the wheels, that are connected to the motor controller with the connections shown below. Connections to the micro controller can be seen below as well. 
 ![STM32-Connections](/ControllerConnections.PNG "STM32-wiring")
 
 In addition to the controller, there are 2 ultrasonic sensor, 1 USART bluetooth unit, and a Isaac's Dual motor controller. Pin connections are listed bellow for clarification. 
 
 ![SensorA Wiring](/SensorAWire.PNG "Ultra sonic sensor A Wiring") 
 ![SensorB Wiring](/SensorBWire.PNG "Ultra sonic sensor B Wiring")
-
+![Motor Controller Diagram](/MotorControllerWire.PNG "Motor Controller Wiring diagram")
 
 
 
