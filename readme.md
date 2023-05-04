@@ -11,7 +11,7 @@ The purpose of this project was to create a rover capable of traversing a maze w
 Our rover has two ultra sonic sensors, one on the front and the other 90 degrees to the right of the first. The rover's autonomous movement is based on the position of obstructions/walls in front of the sensors. Depending on which sensor(s) detect an obstruction, the rover makes the decision to move in a direction which will allow the rover to keep its right side close to a wall/object. The rover also has the ability to back up and turn left in case it becomes stuck. If nothing is detected by the rover, it will turn 360 degrees, then move forward until an object is detected.
 
 ## Flow charts
-![State Machine Example](/5780_stateDesign.PNG "State Machine Example")
+![State Machine Example](/StateDesign.PNG "State Machine Example")
 
 ## Build Instructions
 ### Generate Source
