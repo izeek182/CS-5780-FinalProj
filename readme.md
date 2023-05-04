@@ -1,13 +1,14 @@
 # CS-5780 Final Project
  
- <!-- Come up with a project name? -->
+ ## Team Name
+ Team Crimson
  
  
 ## Purpose
-Fill this in with the purpose of this project
+The purpose of this project was to create a rover capable of traversing a maze without direct knowledge of the landscape/possible obstructions. We were also tasked with implementing at least 3 techniques from our labs this semester. We chose to use GPIO, timers, interrupts and USART(not used in final implementation).
 
 ## Functionality
-Fill this in with what the rover does, and how it operates. autonomous ect.
+Our rover has two ultra sonic sensors, one on the front and the other 90 degrees to the right of the first. The rover's autonomous movement is based on the position of obstructions/walls in front of the sensors. Depending on which sensor(s) detect an obstruction, the rover makes the decision to move in a direction which will allow the rover to keep its right side close to a wall/object. The rover also has the ability to back up and turn left in case it becomes stuck. If nothing is detected by the rover, it will turn 360 degrees, then move forward until an object is detected.
 
 ## Flow charts
 Add the state machine diagram for the control logic here, and any other flow charts that are relevant. 
