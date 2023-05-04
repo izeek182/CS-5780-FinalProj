@@ -213,7 +213,7 @@ int main(void)
     {
     }
     // Resets the memory indicating new data has been collected
-    freshData = 0;
+    // freshData = 0;
 
 
     if(currentState == lastState){
@@ -222,7 +222,7 @@ int main(void)
       staleCount = 0;
     }
 
-    
+
     lastState = currentState;
 
 
@@ -247,7 +247,8 @@ int main(void)
       {
         currentState = unJam;
       }
-      else if (frontDist < FrontClose)
+      else
+       if (frontDist < FrontClose)
       {
         currentState = reverse;
       }
@@ -273,7 +274,8 @@ int main(void)
       {
         currentState = unJam;
       }
-      else if (frontDist < FrontClose)
+      else 
+      if (frontDist < FrontClose)
       {
         currentState = reverse;
       }
@@ -291,7 +293,8 @@ int main(void)
       {
         currentState = unJam;
       }
-      else if (frontDist < FrontClose)
+      else 
+      if (frontDist < FrontClose)
       {
         currentState = reverse;
       }
@@ -308,7 +311,8 @@ int main(void)
       if(staleCount > 10){
         currentState = searching;
       }
-      else if (frontDist < FrontClose)
+      else 
+      if (frontDist < FrontClose)
       {
         currentState = reverse;
       }
@@ -326,7 +330,8 @@ int main(void)
       {
         currentState = unJam;
       }
-      else if (frontDist < FrontClose)
+      else 
+      if (frontDist < FrontClose)
       {
         currentState = reverse;
       }
